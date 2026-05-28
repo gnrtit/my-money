@@ -1,0 +1,25 @@
+# 압축 파일
+*.zip
+*.tar.gz
+*.7z
+
+# OS 생성 파일
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 에디터 설정
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Claude Code 설정
+.claude/
+
+# 로그
+*.log
+
+# 환경 변수 (Firebase 키 등 민감 정보가 있다면)
+.env
+.env.local
