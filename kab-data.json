@@ -1,0 +1,76 @@
+{
+  "bf": [
+    {"id":1,"name":"헌금 (십일조+감사)","sub":"","amount":320000},
+    {"id":2,"name":"아파트 관리비","sub":"매월 변동 (예산)","amount":220000},
+    {"id":3,"name":"통신비","sub":"재조정 예정","amount":81770},
+    {"id":4,"name":"인터넷비","sub":"SK","amount":43450},
+    {"id":5,"name":"교통비","sub":"주유·하이패스·대중교통·주차","amount":100000},
+    {"id":6,"name":"자전거 렌탈","sub":"~27년 2월","amount":29900},
+    {"id":7,"name":"이발비","sub":"","amount":30000},
+    {"id":8,"name":"신용정보보호","sub":"","amount":3300}
+  ],
+  "bi2": [
+    {"id":2,"name":"국민건강보험 ①","sub":"매월 25일","amount":8760},
+    {"id":3,"name":"국민건강보험 ②","sub":"매월 25일","amount":22350},
+    {"id":4,"name":"롯데손해보험","sub":"매월 26일 / 90세만기","amount":40553},
+    {"id":5,"name":"농협보험","sub":"매월 26일 / NH헤아림","amount":95842},
+    {"id":6,"name":"하나손해보험 (운전자)","sub":"매월 26일","amount":13100},
+    {"id":7,"name":"채무면제유예상품","sub":"0.378%","amount":22000}
+  ],
+  "bs": [
+    {"id":1,"name":"Claude","sub":"","amount":28154},
+    {"id":2,"name":"ChatGPT","sub":"","amount":32202},
+    {"id":3,"name":"AI릴리스","sub":"","amount":19900},
+    {"id":4,"name":"유튜브 프리미엄","sub":"","amount":14900},
+    {"id":5,"name":"네이버 플러스","sub":"","amount":4900},
+    {"id":6,"name":"파일조","sub":"","amount":10890},
+    {"id":7,"name":"Adobe","sub":"포토샵·라이트룸","amount":13200},
+    {"id":8,"name":"미리캔버스","sub":"","amount":14900},
+    {"id":9,"name":"Apple","sub":"","amount":3300},
+    {"id":10,"name":"밀리의 서재","sub":"","amount":11900}
+  ],
+  "binst": [
+    {"id":1,"g":"lotte","name":"카메라렌즈 70-200","sub":"26년 6월 완납","monthlyAmount":139100,"totalAmount":2779200,"totalMonths":22,"firstPaymentYM":"2024-09","mc":null,"mt":null},
+    {"id":2,"g":"lotte","name":"카메라슬링백 12L","sub":"","monthlyAmount":12000,"totalAmount":64500,"totalMonths":5,"firstPaymentYM":"2026-02","mc":null,"mt":null},
+    {"id":3,"g":"lotte","name":"데스뷰 텔레프롬프터 T12","sub":"","monthlyAmount":50700,"totalAmount":253650,"totalMonths":5,"firstPaymentYM":"2026-02","mc":null,"mt":null},
+    {"id":4,"g":"lotte","name":"나이스결제대행","sub":"","monthlyAmount":23400,"totalAmount":117000,"totalMonths":5,"firstPaymentYM":"2026-04","mc":null,"mt":null},
+    {"id":5,"g":"kb","name":"패션포유","sub":"","monthlyAmount":18800,"totalAmount":94000,"totalMonths":5,"firstPaymentYM":"2026-01","mc":null,"mt":null},
+    {"id":6,"g":"kb","name":"테라퓨젠 유산균","sub":"","monthlyAmount":15960,"totalAmount":79800,"totalMonths":5,"firstPaymentYM":"2026-01","mc":null,"mt":null},
+    {"id":7,"g":"kb","name":"고독스 스트로브+동조기","sub":"","monthlyAmount":174580,"totalAmount":523740,"totalMonths":3,"firstPaymentYM":"2026-03","mc":null,"mt":null},
+    {"id":8,"g":"kb","name":"소니 무선리모컨","sub":"","monthlyAmount":31620,"totalAmount":94860,"totalMonths":3,"firstPaymentYM":"2026-03","mc":null,"mt":null},
+    {"id":9,"g":"kb","name":"명륜진사갈비","sub":"","monthlyAmount":54750,"totalAmount":109500,"totalMonths":2,"firstPaymentYM":"2026-04","mc":null,"mt":null},
+    {"id":10,"g":"kb","name":"시크릿랩","sub":"","monthlyAmount":66333,"totalAmount":199000,"totalMonths":3,"firstPaymentYM":"2026-03","mc":null,"mt":null},
+    {"id":11,"g":"kb","name":"카메라가방 리버티170","sub":"","monthlyAmount":35480,"totalAmount":106440,"totalMonths":3,"firstPaymentYM":"2026-05","mc":null,"mt":null},
+    {"id":12,"g":"kb","name":"영양제","sub":"","monthlyAmount":60466,"totalAmount":181400,"totalMonths":3,"firstPaymentYM":"2026-05","mc":null,"mt":null},
+    {"id":13,"g":"kb","name":"레벨링 (알리)","sub":"","monthlyAmount":18100,"totalAmount":54300,"totalMonths":3,"firstPaymentYM":"2026-05","mc":null,"mt":null},
+    {"id":14,"g":"kb","name":"삼각대 헤드 (알리)","sub":"","monthlyAmount":34066,"totalAmount":102200,"totalMonths":3,"firstPaymentYM":"2026-05","mc":null,"mt":null},
+    {"id":15,"g":"kb","name":"카메라가방 리버티180","sub":"","monthlyAmount":25740,"totalAmount":128700,"totalMonths":5,"firstPaymentYM":"2026-02","mc":null,"mt":null},
+    {"id":16,"g":"kb","name":"구두 (무신사)","sub":"","monthlyAmount":37600,"totalAmount":112800,"totalMonths":3,"firstPaymentYM":"2026-05","mc":null,"mt":null},
+    {"id":17,"g":"kb","name":"패스트캠퍼스","sub":"","monthlyAmount":15750,"totalAmount":189000,"totalMonths":12,"firstPaymentYM":"2025-08","mc":null,"mt":null},
+    {"id":18,"g":"long","name":"와디즈","sub":"27년 3월 완납","monthlyAmount":24744,"totalAmount":209160,"totalMonths":18,"firstPaymentYM":"2025-12","mc":null,"mt":null},
+    {"id":19,"g":"long","name":"코만 카메라 삼각대","sub":"27년 1월 완납","monthlyAmount":56681,"totalAmount":566810,"totalMonths":10,"firstPaymentYM":"2026-05","mc":null,"mt":null},
+    {"id":20,"g":"long","name":"컴퓨터 (쿠팡)","sub":"27년 2월 완납","monthlyAmount":182142,"totalAmount":2550000,"totalMonths":14,"firstPaymentYM":"2026-02","mc":null,"mt":null},
+    {"id":21,"g":"long","name":"소니 표준렌즈 24-70 GM2","sub":"롯데카드 16개월 무이자 · 27년 8월 완납","monthlyAmount":165000,"totalAmount":2640740,"totalMonths":16,"firstPaymentYM":"2026-05","mc":null,"mt":null,"cardType":"lotte"}
+  ],
+  "bln": {
+    "original": 3567000,
+    "balance": 2187056,
+    "date": "26.04.23",
+    "note": "내년 말 퇴직금 또는 축의금으로 조기 상환 예정"
+  },
+  "bpb": [
+    {"date":"3/17","amount":60000,"datetime":"2026-03-17T10:00"}
+  ],
+  "bpbi": [],
+  "btx": [],
+  "bsav": [],
+  "bsavg": [],
+  "bmemo": [],
+  "barch": {},
+  "bsettings": {
+    "income": 2750000,
+    "insStartY": 2024,
+    "insStartM": 11,
+    "insTotal": 120
+  }
+}
