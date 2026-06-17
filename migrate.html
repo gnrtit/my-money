@@ -1,0 +1,111 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>가계부 DB 마이그레이션</title><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:#0f0f10;color:#f0ede8;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}.wrap{width:100%;max-width:440px}.title{font-size:22px;font-weight:700;margin-bottom:4px}span.g{color:#d4a847}.sub{font-size:12px;color:#5c5a57;margin-bottom:28px;line-height:1.6}.card{background:#1a1a1d;border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:20px;margin-bottom:14px}.card h3{font-size:11px;font-weight:600;color:#9b9893;letter-spacing:.6px;text-transform:uppercase;margin-bottom:12px}.inp{width:100%;background:#222226;border:1px solid rgba(255,255,255,.14);border-radius:8px;padding:10px 13px;color:#f0ede8;font-size:13px;outline:none;margin-bottom:8px}.inp:focus{border-color:#d4a847}.btn{width:100%;padding:13px;background:#d4a847;color:#0f0f10;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;margin-top:6px}.btn:disabled{opacity:.5;cursor:not-allowed}.log{background:#222226;border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:14px;font-size:12px;line-height:1.9;max-height:260px;overflow-y:auto;margin-top:14px;display:none}.ok{color:#4caf7d}.err{color:#e05c5c}.warn{color:#d4a847}.dim{color:#5c5a57}</style></head><body><div class="wrap"><div class="title">내 <span class="g">가계부</span> DB 마이그레이션</div><div class="sub">Firebase Realtime Database → GitHub Gist<br>아래 정보를 입력하면 데이터를 자동으로 옮겨드립니다.</div>
+
+<div class="card"><h3>① Firebase 계정</h3><input class="inp" id="fb-email" type="email" placeholder="이메일 (가계부 로그인 이메일)"><input class="inp" id="fb-pw" type="password" placeholder="비밀번호"></div>
+
+<div class="card"><h3>② GitHub Gist (마이그레이션 대상)</h3><input class="inp" id="gh-pat" type="password" placeholder="GitHub PAT (gist 권한)"><input class="inp" id="gh-gist" type="text" placeholder="Gist ID"></div>
+
+<button class="btn" id="btn" onclick="migrate()">마이그레이션 시작</button>
+<div class="log" id="log"></div></div>
+
+<script>
+const FB_API_KEY = 'AIzaSyB2qbgn8KCqZwAE2gYpmzYfU1ZSw_QwErU';
+const FB_DB_URL  = 'https://my-money-7538b-default-rtdb.firebaseio.com';
+const GH_API     = 'https://api.github.com';
+const FILENAME   = 'kab-data.json';
+const DB_KEYS    = ['bf','bi2','bs','binst','btx','bln','bpb','bpbi','barch','bsav','bsavg','bmemo','bsettings'];
+
+const logEl = document.getElementById('log');
+function log(msg, cls='') {
+  logEl.style.display = 'block';
+  logEl.innerHTML += `<div class="${cls}">${msg}</div>`;
+  logEl.scrollTop = logEl.scrollHeight;
+}
+
+async function migrate() {
+  const email  = document.getElementById('fb-email').value.trim();
+  const pw     = document.getElementById('fb-pw').value;
+  const pat    = document.getElementById('gh-pat').value.trim();
+  const gistId = document.getElementById('gh-gist').value.trim();
+
+  if (!email || !pw || !pat || !gistId) {
+    log('❌ 모든 항목을 입력해주세요.', 'err'); return;
+  }
+
+  const btn = document.getElementById('btn');
+  btn.disabled = true; btn.textContent = '마이그레이션 중…';
+  logEl.innerHTML = '';
+
+  try {
+    // ── 1. Firebase 이메일 로그인 ────────────────────────────
+    log('🔐 Firebase 로그인 중…');
+    const authRes = await fetch(
+      `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${FB_API_KEY}`,
+      { method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ email, password:pw, returnSecureToken:true }) }
+    );
+    const authData = await authRes.json();
+    if (!authRes.ok) {
+      const code = authData.error?.message || '';
+      const msg  = code.includes('INVALID_LOGIN_CREDENTIALS') || code.includes('INVALID_PASSWORD')
+        ? '이메일 또는 비밀번호가 틀렸습니다.'
+        : code.includes('TOO_MANY_ATTEMPTS') ? '시도 횟수 초과. 잠시 후 다시 시도하세요.'
+        : code;
+      log('❌ 로그인 실패: ' + msg, 'err'); return;
+    }
+    const { idToken, localId: uid } = authData;
+    log(`✅ 로그인 성공 <span class="dim">(UID: ${uid})</span>`, 'ok');
+
+    // ── 2. Firebase 데이터 읽기 ──────────────────────────────
+    log('📦 Firebase 데이터 읽는 중…');
+    const dbRes = await fetch(`${FB_DB_URL}/users/${uid}.json?auth=${idToken}`);
+    const raw   = await dbRes.json();
+    if (!dbRes.ok) { log('❌ Firebase 읽기 실패 (' + dbRes.status + ')', 'err'); return; }
+    if (!raw)      { log('⚠️ Firebase에 저장된 데이터가 없습니다.', 'warn'); return; }
+    log('✅ Firebase 읽기 완료', 'ok');
+
+    // ── 3. 데이터 변환 (JSON 문자열 → 파싱된 객체) ──────────
+    log('🔄 데이터 변환 중…');
+    const gistData = {};
+    let totalRecs = 0;
+    for (const key of DB_KEYS) {
+      if (raw[key] === undefined) { log(`  <span class="dim">· ${key}: (없음)</span>`); continue; }
+      try {
+        const val = typeof raw[key] === 'string' ? JSON.parse(raw[key]) : raw[key];
+        gistData[key] = val;
+        const cnt = Array.isArray(val) ? val.length + '건' : typeof val === 'object' ? '✓' : String(val);
+        log(`  · <b>${key}</b>: <span class="ok">${cnt}</span>`);
+        if (Array.isArray(val)) totalRecs += val.length;
+      } catch(e) {
+        log(`  · <b>${key}</b>: <span class="warn">⚠ 파싱 실패 — 원본 유지</span>`);
+        gistData[key] = raw[key];
+      }
+    }
+    log(`변환 완료 — 총 ${totalRecs}건`, 'ok');
+
+    // ── 4. Gist 저장 ─────────────────────────────────────────
+    log('💾 Gist에 저장 중…');
+    const ghRes = await fetch(`${GH_API}/gists/${gistId}`, {
+      method:'PATCH',
+      headers:{
+        'Authorization':`Bearer ${pat}`,
+        'Accept':'application/vnd.github+json',
+        'X-GitHub-Api-Version':'2022-11-28',
+        'Content-Type':'application/json',
+      },
+      body: JSON.stringify({ files:{ [FILENAME]:{ content: JSON.stringify(gistData, null, 2) } } })
+    });
+    if (!ghRes.ok) {
+      const t = await ghRes.text();
+      log(`❌ Gist 저장 실패 (${ghRes.status}): ${t}`, 'err'); return;
+    }
+    log('', '');
+    log('🎉 마이그레이션 완료!', 'ok');
+    log('가계부 앱을 새로고침하면 데이터가 표시됩니다.', 'ok');
+    btn.textContent = '마이그레이션 완료 ✓';
+
+  } catch(e) {
+    log('❌ 오류: ' + e.message, 'err');
+    btn.disabled = false; btn.textContent = '다시 시도';
+  }
+}
+</script></body></html>
